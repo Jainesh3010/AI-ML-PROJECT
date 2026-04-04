@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI ML Portfolio – Jainesh Sanghavi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+/* ─── RESET & BASE ──────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+/* ─── THEME TOKENS ──────────────────────────────────────────── */
+:root{
+  --font-display:'Syne',sans-serif;
+  --font-body:'DM Sans',sans-serif;
+  --bg:#080808;--bg-alt:#0e0e0e;
+  --surface:rgba(255,255,255,0.04);--surface-hover:rgba(255,255,255,0.08);
+  --border:rgba(255,255,255,0.08);--border-glow:rgba(255,255,255,0.18);
+  --text-primary:#f0f0f0;--text-secondary:#a0a0a0;
+  --nav-bg:rgba(0,0,0,0.85);--footer-bg:#000;
+  --glow-white:rgba(255,255,255,0.12);
+  --card-bg:rgba(14,14,14,0.7);--tag-bg:rgba(255,255,255,0.06);
+  --input-bg:rgba(255,255,255,0.05);--input-border:rgba(255,255,255,0.12);
+}
+[data-theme="light"]{
+  --bg:#f5f5f5;--bg-alt:#ececec;
+  --surface:rgba(0,0,0,0.04);--surface-hover:rgba(0,0,0,0.07);
+  --border:rgba(0,0,0,0.1);--border-glow:rgba(0,0,0,0.2);
+  --text-primary:#111;--text-secondary:#555;
+  --nav-bg:rgba(0,0,0,0.92);--footer-bg:#000;
+  --card-bg:rgba(255,255,255,0.75);--tag-bg:rgba(0,0,0,0.06);
+  --input-bg:rgba(0,0,0,0.04);--input-border:rgba(0,0,0,0.15);
+}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text-primary);overflow-x:hidden;transition:background .4s,color .4s}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-radius:2px}
+
+/* ─── NAVBAR ────────────────────────────────────────────────── */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--nav-bg);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:64px;transition:box-shadow .3s}
+nav.scrolled{box-shadow:0 4px 40px rgba(0,0,0,0.6)}
+.nav-logo{font-family:var(--font-display);font-weight:800;font-size:1.35rem;letter-spacing:.04em;color:#fff;text-decoration:none;display:flex;align-items:center;gap:8px}
+.nav-logo span{display:inline-block;width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 10px rgba(255,255,255,0.8);animation:pulse-dot 2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.5}}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{font-family:var(--font-body);font-size:.875rem;font-weight:400;color:rgba(255,255,255,0.65);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;position:relative;transition:color .25s}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:#fff;transition:width .3s ease}
+.nav-links a:hover{color:#fff}.nav-links a:hover::after{width:100%}
+.nav-actions{display:flex;align-items:center;gap:12px}
+.theme-toggle{width:44px;height:24px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:12px;cursor:pointer;position:relative;transition:background .3s}
+.theme-toggle::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .3s cubic-bezier(.4,0,.2,1),background .3s}
+
+
+/* ─── HERO ──────────────────────────────────────────────────── */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;overflow:hidden;padding:120px 5% 80px}
+.hero-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(80,80,80,0.15) 0%,transparent 70%),radial-gradient(ellipse 50% 40% at 80% 80%,rgba(60,60,60,0.1) 0%,transparent 60%),#080808}
+[data-theme="light"] .hero-bg{background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(160,160,160,0.18) 0%,transparent 70%),#f5f5f5}
+.hero-grid{position:absolute;inset:0;z-index:1;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:60px 60px;animation:grid-drift 20s linear infinite}
+[data-theme="light"] .hero-grid{background-image:linear-gradient(rgba(0,0,0,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.05) 1px,transparent 1px)}
+@keyframes grid-drift{0%{background-position:0 0}100%{background-position:60px 60px}}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:1;animation:orb-float 12s ease-in-out infinite}
+.orb-1{width:500px;height:500px;background:rgba(255,255,255,0.04);top:-100px;left:-100px}
+.orb-2{width:400px;height:400px;background:rgba(200,200,200,0.03);bottom:-80px;right:-80px;animation-delay:-6s}
+@keyframes orb-float{0%,100%{transform:translate(0,0)}33%{transform:translate(30px,-20px)}66%{transform:translate(-20px,30px)}}
+.neural-canvas{position:absolute;inset:0;z-index:1;opacity:.35}
+.hero-content{position:relative;z-index:2;max-width:820px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border-glow);background:var(--surface);backdrop-filter:blur(10px);border-radius:24px;padding:6px 16px;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:28px;animation:fade-up .8s ease both}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--text-primary);animation:pulse-dot 2s infinite}
+.hero-title{font-family:var(--font-display);font-size:clamp(3rem,9vw,7rem);font-weight:800;line-height:1;letter-spacing:-.02em;color:var(--text-primary);margin-bottom:20px;animation:fade-up .8s .15s ease both}
+.hero-title .outline{-webkit-text-stroke:1.5px var(--text-primary);color:transparent}
+.hero-sub{font-size:clamp(1rem,2vw,1.2rem);font-weight:300;letter-spacing:.02em;color:var(--text-secondary);max-width:520px;margin:0 auto 16px;animation:fade-up .8s .3s ease both}
+.hero-name{font-family:var(--font-display);font-size:1rem;font-weight:600;letter-spacing:.25em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:40px;animation:fade-up .8s .4s ease both}
+.cta-btn{display:inline-flex;align-items:center;gap:10px;background:var(--text-primary);color:var(--bg);border:none;border-radius:3px;padding:16px 36px;font-family:var(--font-display);font-weight:700;font-size:.9rem;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;text-decoration:none;position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s;animation:fade-up .8s .55s ease both}
+.cta-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(120deg,transparent 40%,rgba(255,255,255,0.3) 50%,transparent 60%);transform:translateX(-100%);transition:transform .5s}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(255,255,255,0.2)}.cta-btn:hover::before{transform:translateX(100%)}
+.cta-btn .arrow{transition:transform .25s}.cta-btn:hover .arrow{transform:translateX(4px)}
+.hero-scroll{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text-secondary);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--text-secondary),transparent);animation:scroll-bounce 2s ease-in-out infinite}
+@keyframes scroll-bounce{0%,100%{opacity:1;transform:scaleY(1)}50%{opacity:.4;transform:scaleY(.6)}}
+@keyframes fade-up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── SECTIONS ──────────────────────────────────────────────── */
+section{padding:100px 5%}
+.section-label{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-secondary);display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.section-label::before{content:'';display:inline-block;width:30px;height:1px;background:var(--text-secondary)}
+.section-title{font-family:var(--font-display);font-size:clamp(2rem,4vw,3.2rem);font-weight:800;letter-spacing:-.01em;line-height:1.1;color:var(--text-primary);margin-bottom:60px}
+
+/* ─── HOW AI WORKS ──────────────────────────────────────────── */
+#how-it-works{background:var(--bg-alt)}
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+.step-card{background:var(--card-bg);border:1px solid var(--border);border-radius:2px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:40px 32px;position:relative;overflow:hidden;transition:transform .3s,border-color .3s,box-shadow .3s;cursor:default}
+.step-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--surface-hover) 0%,transparent 70%);opacity:0;transition:opacity .3s}
+.step-card:hover{transform:translateY(-6px);border-color:var(--border-glow);box-shadow:0 20px 60px rgba(255,255,255,0.06)}.step-card:hover::before{opacity:1}
+.step-number{font-family:var(--font-display);font-size:.7rem;font-weight:700;letter-spacing:.2em;color:var(--text-secondary);margin-bottom:24px}
+.step-icon{width:48px;height:48px;margin-bottom:24px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:2px;font-size:1.4rem;color:var(--text-primary);transition:border-color .3s,background .3s}
+.step-card:hover .step-icon{border-color:var(--border-glow);background:var(--surface-hover)}
+.step-card h3{font-family:var(--font-display);font-size:1.2rem;font-weight:700;color:var(--text-primary);margin-bottom:12px}
+.step-card p{font-size:.875rem;line-height:1.7;color:var(--text-secondary)}
+
+/* ─── MODELS ────────────────────────────────────────────────── */
+#models{background:var(--bg)}
+.models-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.model-card{position:relative;overflow:hidden;background:var(--card-bg);border:1px solid var(--border);border-radius:2px;backdrop-filter:blur(16px);padding:0;transition:transform .35s cubic-bezier(.4,0,.2,1),box-shadow .35s,border-color .35s;cursor:pointer}
+.model-card::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(255,255,255,0.03) 100%);opacity:0;transition:opacity .35s}
+.model-card:hover{transform:translateY(-8px) scale(1.01);border-color:rgba(255,255,255,0.25);box-shadow:0 0 0 1px rgba(255,255,255,0.08),0 24px 60px rgba(0,0,0,0.5),0 0 40px rgba(255,255,255,0.04)}.model-card:hover::after{opacity:1}
+.model-card-top{padding:32px 28px 24px;border-bottom:1px solid var(--border)}
+.model-tag{display:inline-block;background:var(--tag-bg);border:1px solid var(--border);border-radius:2px;padding:4px 10px;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:20px}
+.model-icon{width:52px;height:52px;border-radius:2px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--text-primary);margin-bottom:20px;transition:transform .3s,border-color .3s}
+.model-card:hover .model-icon{transform:scale(1.08);border-color:var(--border-glow)}
+.model-card h3{font-family:var(--font-display);font-size:1.15rem;font-weight:700;color:var(--text-primary);margin-bottom:8px}
+.model-card p{font-size:.82rem;line-height:1.65;color:var(--text-secondary)}
+.model-card-bottom{padding:20px 28px;display:flex;align-items:center;justify-content:space-between}
+.model-accuracy{font-family:var(--font-display);font-size:.8rem;font-weight:600;color:var(--text-secondary);letter-spacing:.05em}
+.model-accuracy span{color:var(--text-primary);font-size:1.1rem}
+.model-arrow{width:34px;height:34px;border:1px solid var(--border);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--text-secondary);transition:background .25s,border-color .25s,transform .25s,color .25s}
+.model-card:hover .model-arrow{background:var(--text-primary);border-color:var(--text-primary);color:var(--bg);transform:rotate(45deg)}
+
+/* ─── INSTRUCTION ───────────────────────────────────────────── */
+#instruction{background:var(--bg-alt)}
+.instruction-inner{max-width:760px}
+.instruction-steps{display:flex;flex-direction:column;gap:0;margin-top:48px}
+.inst-row{display:grid;grid-template-columns:56px 1fr;gap:24px;align-items:start;padding:28px 0;border-top:1px solid var(--border);transition:background .2s}
+.inst-row:last-child{border-bottom:1px solid var(--border)}
+.inst-num{font-family:var(--font-display);font-size:2rem;font-weight:800;color:var(--border-glow);line-height:1}
+.inst-row h4{font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:6px}
+.inst-row p{font-size:.875rem;line-height:1.7;color:var(--text-secondary)}
+
+/* ─── CONTACT ───────────────────────────────────────────────── */
+#contact{background:var(--bg);text-align:center}
+.contact-tagline{font-size:clamp(1rem,2vw,1.15rem);color:var(--text-secondary);font-weight:300;max-width:500px;margin:0 auto 56px;line-height:1.7}
+.social-row{display:flex;justify-content:center;gap:20px;flex-wrap:wrap}
+.social-card{display:flex;flex-direction:column;align-items:center;gap:14px;background:var(--card-bg);border:1px solid var(--border);border-radius:2px;backdrop-filter:blur(16px);padding:36px 44px;text-decoration:none;color:var(--text-primary);transition:transform .3s,border-color .3s,box-shadow .3s;min-width:160px}
+.social-card:hover{transform:translateY(-8px) scale(1.04);border-color:var(--border-glow);box-shadow:0 20px 50px rgba(255,255,255,0.06)}
+.social-card .icon{width:54px;height:54px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;transition:background .3s,border-color .3s,transform .3s}
+.social-card:hover .icon{background:var(--text-primary);color:var(--bg);border-color:var(--text-primary);transform:scale(1.15) rotate(-5deg)}
+.social-card span{font-family:var(--font-display);font-size:.8rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary)}
+.divider{height:1px;background:var(--border);margin:0 5%}
+footer{background:#000;padding:32px 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;border-top:1px solid rgba(255,255,255,0.06)}
+.footer-logo{font-family:var(--font-display);font-weight:800;font-size:1rem;color:#fff;letter-spacing:.05em}
+.footer-copy{font-size:.78rem;color:rgba(255,255,255,0.3);letter-spacing:.05em}
+.footer-name{font-family:var(--font-display);font-size:.78rem;font-weight:600;color:rgba(255,255,255,0.5);letter-spacing:.1em;text-transform:uppercase}
+
+/* ─── REVEAL ─────────────────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}.reveal-delay-2{transition-delay:.2s}.reveal-delay-3{transition-delay:.3s}.reveal-delay-4{transition-delay:.4s}
+
+/* ═══════════════════════════════════════════════════════════════
+   PREDICTION MODAL
+═══════════════════════════════════════════════════════════════ */
+.modal-overlay{
+  position:fixed;inset:0;z-index:2000;
+  background:rgba(0,0,0,0.88);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s;padding:16px
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{
+  background:var(--bg-alt);
+  border:1px solid var(--border);
+  border-radius:4px;
+  width:100%;max-width:540px;
+  max-height:90vh;overflow-y:auto;
+  padding:36px 32px;
+  transform:translateY(20px);
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+  position:relative
+}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-close{
+  position:absolute;top:16px;right:16px;
+  width:32px;height:32px;border-radius:2px;
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--text-secondary);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;transition:background .2s,color .2s
+}
+.modal-close:hover{background:var(--text-primary);color:var(--bg)}
+.modal-tag{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:12px;display:block}
+.modal h2{font-family:var(--font-display);font-size:1.5rem;font-weight:800;color:var(--text-primary);margin-bottom:28px}
+
+/* Form */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+.form-grid.single{grid-template-columns:1fr}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary)}
+.field input,.field select{
+  background:var(--input-bg);
+  border:1px solid var(--input-border);
+  border-radius:2px;
+  padding:10px 12px;
+  font-family:var(--font-body);font-size:.875rem;
+  color:var(--text-primary);
+  outline:none;
+  transition:border-color .2s,background .2s
+}
+.field input:focus,.field select:focus{border-color:var(--border-glow);background:var(--surface-hover)}
+.field select option{background:var(--bg-alt);color:var(--text-primary)}
+
+/* Submit button */
+.submit-btn{
+  width:100%;padding:14px;
+  background:var(--text-primary);color:var(--bg);
+  border:none;border-radius:2px;
+  font-family:var(--font-display);font-weight:700;font-size:.9rem;letter-spacing:.06em;text-transform:uppercase;
+  cursor:pointer;position:relative;overflow:hidden;
+  transition:transform .2s,box-shadow .2s
+}
+.submit-btn:hover{transform:translateY(-1px);box-shadow:0 8px 30px rgba(255,255,255,0.15)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* Result box */
+.result-box{
+  margin-top:20px;
+  background:var(--surface);
+  border:1px solid var(--border-glow);
+  border-radius:2px;
+  padding:20px 24px;
+  display:none
+}
+.result-box.show{display:block}
+.result-label{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:6px}
+.result-value{font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:var(--text-primary)}
+.result-note{font-size:.78rem;color:var(--text-secondary);margin-top:6px}
+
+/* Show Graph button */
+.graph-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  margin-top:14px;
+  background:transparent;
+  border:1px solid var(--border-glow);
+  color:var(--text-primary);
+  border-radius:2px;padding:10px 20px;
+  font-family:var(--font-display);font-weight:600;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;
+  cursor:pointer;transition:background .2s,border-color .2s;
+  display:none
+}
+.graph-btn.show{display:inline-flex}
+.graph-btn:hover{background:var(--surface-hover)}
+
+/* Graph image panel */
+.graph-panel{
+  margin-top:16px;display:none;
+  border:1px solid var(--border);border-radius:2px;overflow:hidden
+}
+.graph-panel.show{display:block}
+.graph-panel img{width:100%;display:block}
+.graph-panel-label{
+  padding:8px 14px;background:var(--surface);
+  font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);
+  display:flex;align-items:center;justify-content:space-between
+}
+
+/* Loading spinner */
+.spinner{display:none;margin:20px auto;width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--text-primary);border-radius:50%;animation:spin .7s linear infinite}
+.spinner.show{display:block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Error */
+.error-box{margin-top:12px;padding:12px 16px;background:rgba(255,100,100,0.08);border:1px solid rgba(255,100,100,0.2);border-radius:2px;font-size:.82rem;color:#ff8080;display:none}
+.error-box.show{display:block}
+
+/* ─── MOBILE ─────────────────────────────────────────────────── */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .models-grid,.steps-grid{grid-template-columns:1fr}
+  footer{flex-direction:column;text-align:center}
+  .form-grid{grid-template-columns:1fr}
+  .modal{padding:24px 18px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#" class="nav-logo"><span></span>AI ML</a>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#models">Models</a></li>
+    <li><a href="#instruction">Instruction</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="orb orb-1"></div><div class="orb orb-2"></div>
+  <canvas class="neural-canvas" id="neuralCanvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="hero-badge-dot"></span>Machine Learning · Deep Learning · Predictions</div>
+    <h1 class="hero-title">AI ML<br><span class="outline">Portfolio</span></h1>
+    <p class="hero-sub">Smart Predictions using Artificial Intelligence</p>
+    <p class="hero-name">— Jainesh Sanghavi —</p>
+    <a href="#models" class="cta-btn">Explore Models <span class="arrow">→</span></a>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div><span>Scroll</span></div>
+</section>
+
+<!-- HOW AI WORKS -->
+<section id="how-it-works">
+  <p class="section-label reveal">Process</p>
+  <h2 class="section-title reveal reveal-delay-1">How AI Works</h2>
+  <div class="steps-grid">
+    <div class="step-card reveal reveal-delay-1">
+      <p class="step-number">01</p><div class="step-icon">🗄️</div>
+      <h3>Data Input</h3>
+      <p>Raw structured and unstructured data is collected, cleaned and preprocessed. Quality data is the foundation of every powerful AI model.</p>
+    </div>
+    <div class="step-card reveal reveal-delay-2">
+      <p class="step-number">02</p><div class="step-icon">🧠</div>
+      <h3>Model Training</h3>
+      <p>Algorithms learn hidden patterns through iterative optimization. The model is evaluated, tuned and validated against held-out test sets.</p>
+    </div>
+    <div class="step-card reveal reveal-delay-3">
+      <p class="step-number">03</p><div class="step-icon">📊</div>
+      <h3>Prediction Output</h3>
+      <p>The trained model generates actionable predictions on new, unseen data — powering smarter business and research decisions at scale.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MODELS -->
+<section id="models">
+  <p class="section-label reveal">Projects</p>
+  <h2 class="section-title reveal reveal-delay-1">Models Overview</h2>
+  <div class="models-grid">
+
+    <div class="model-card reveal reveal-delay-1" onclick="openModal('salary')">
+      <div class="model-card-top">
+        <span class="model-tag">Regression</span>
+        <div class="model-icon">💼</div>
+        <h3>Salary Prediction</h3>
+        <p>Predicts annual compensation based on role, experience, education and industry using gradient-boosted regression.</p>
+      </div>
+      <div class="model-card-bottom">
+        <div class="model-accuracy">Accuracy <span>92%</span></div>
+        <div class="model-arrow"><i class="fa fa-arrow-right"></i></div>
+      </div>
+    </div>
+
+    <div class="model-card reveal reveal-delay-2" onclick="openModal('churn')">
+      <div class="model-card-top">
+        <span class="model-tag">Classification</span>
+        <div class="model-icon">📉</div>
+        <h3>Customer Churn</h3>
+        <p>Identifies customers likely to leave using behavioural signals, enabling proactive retention strategies.</p>
+      </div>
+      <div class="model-card-bottom">
+        <div class="model-accuracy">F1 Score <span>89%</span></div>
+        <div class="model-arrow"><i class="fa fa-arrow-right"></i></div>
+      </div>
+    </div>
+
+    <div class="model-card reveal reveal-delay-3" onclick="openModal('promotion')">
+      <div class="model-card-top">
+        <span class="model-tag">Classification</span>
+        <div class="model-icon">🏆</div>
+        <h3>Promotion Prediction</h3>
+        <p>Forecasts employee promotion likelihood based on performance metrics and HR data with high precision.</p>
+      </div>
+      <div class="model-card-bottom">
+        <div class="model-accuracy">Precision <span>87%</span></div>
+        <div class="model-arrow"><i class="fa fa-arrow-right"></i></div>
+      </div>
+    </div>
+
+    <div class="model-card reveal reveal-delay-4" onclick="openModal('house')">
+      <div class="model-card-top">
+        <span class="model-tag">Regression</span>
+        <div class="model-icon">🏠</div>
+        <h3>House Price Prediction</h3>
+        <p>Estimates real-estate valuations using location features, property attributes and market trends.</p>
+      </div>
+      <div class="model-card-bottom">
+        <div class="model-accuracy">R² Score <span>94%</span></div>
+        <div class="model-arrow"><i class="fa fa-arrow-right"></i></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- INSTRUCTION -->
+<section id="instruction">
+  <p class="section-label reveal">Guide</p>
+  <div class="instruction-inner">
+    <h2 class="section-title reveal reveal-delay-1">How to Use</h2>
+    <div class="instruction-steps">
+      <div class="inst-row reveal"><div class="inst-num">01</div><div><h4>Select a Model</h4><p>Navigate to the Models section and click any model card to open the prediction panel.</p></div></div>
+      <div class="inst-row reveal reveal-delay-1"><div class="inst-num">02</div><div><h4>Input Your Data</h4><p>Fill in the required fields. Each model shows clearly labeled inputs for the exact variables needed.</p></div></div>
+      <div class="inst-row reveal reveal-delay-2"><div class="inst-num">03</div><div><h4>Run Prediction</h4><p>Click "Predict" — the Flask server processes your input in real-time and returns an instant result.</p></div></div>
+      <div class="inst-row reveal reveal-delay-3"><div class="inst-num">04</div><div><h4>View Graph</h4><p>After prediction, click "Show Graph" to see a dynamically generated visualization powered by Matplotlib.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label reveal" style="justify-content:center">Connect</p>
+  <h2 class="section-title reveal reveal-delay-1" style="text-align:center">Get In Touch</h2>
+  <p class="contact-tagline reveal reveal-delay-2">Have a project in mind or want to collaborate on an AI/ML solution? Reach out through any of the channels below.</p>
+  <div class="social-row">
+    <a href="https://instagram.com//jainesh__30" target="_blank" rel="noopener" class="social-card reveal reveal-delay-1">
+      <div class="icon"><i class="fab fa-instagram"></i></div><span>Instagram</span>
+    </a>
+<a href="https://mail.google.com/mail/?view=cm&to=jaineshsanghavi8@gmail.com" 
+   target="_blank" 
+   class="social-card reveal reveal-delay-2">
+  <div class="icon"><i class="fas fa-envelope"></i></div>
+  <span>Email</span>
+</a>
+<a href="https://github.com/jainesh3010" target="_blank" class="social-card reveal reveal-delay-3">
+  <div class="icon"><i class="fab fa-github"></i></div>
+  <span>GitHub</span>
+</a>
+    <a href="https://www.linkedin.com/in/jainesh-sanghavi-4aba35341?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" rel="noopener" class="social-card reveal reveal-delay-3">
+      <div class="icon"><i class="fab fa-linkedin-in"></i></div><span>LinkedIn</span>
+    </a>
+  </div>
+</section>
+
+<div class="divider"></div>
+<footer>
+  <span class="footer-logo">AI ML</span>
+  <span class="footer-copy">© 2025 All rights reserved</span>
+  <span class="footer-name">Jainesh Sanghavi</span>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PREDICTION MODALS (one per model)
+═══════════════════════════════════════════════════════════════ -->
+
+<!-- ── SALARY ── -->
+<div class="modal-overlay" id="modal-salary">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('salary')"><i class="fa fa-times"></i></button>
+    <span class="modal-tag">Regression · Random Forest</span>
+    <h2>💼 Salary Prediction</h2>
+    <div class="form-grid">
+      <div class="field"><label>Age</label><input type="number" id="sal-age" placeholder="e.g. 28" min="18" max="65"></div>
+      <div class="field"><label>Experience (years)</label><input type="number" id="sal-exp" placeholder="e.g. 5" min="0" max="40"></div>
+      <div class="field"><label>Education</label>
+        <select id="sal-edu">
+          <option value="0">Bachelor Degree</option>
+          <option value="1">Master's Degree</option>
+          <option value="2">PhD</option>
+        </select>
+      </div>
+      <div class="field"><label>Job Role</label>
+        <select id="sal-job">
+          <option value="0">Developer</option>
+          <option value="1">Director</option>
+          <option value="2">Intern</option>
+          <option value="3">Manager</option>
+          <option value="4">Senior Manager</option>
+          <option value="5">Tester</option>s
+        </select>
+      </div>
+      <div class="field"><label>Location</label>
+        <select id="sal-loc">
+          <option value="0">Ahmedabad</option>
+          <option value="1">Bangalore</option>
+          <option value="2">Delhi</option>
+          <option value="3">Mumbai</option>
+          <option value="4">Pune</option>
+        </select>
+      </div>
+    </div>
+    <button class="submit-btn" onclick="runPredict('salary')">Predict Salary →</button>
+    <div class="spinner" id="spin-salary"></div>
+    <div class="error-box" id="err-salary"></div>
+    <div class="result-box" id="res-salary">
+      <div class="result-label">Predicted Annual Salary</div>
+      <div class="result-value" id="resval-salary"></div>
+      <div class="result-note">Based on your experience, role, education &amp; location</div>
+      <button class="graph-btn" id="gbtn-salary" onclick="showGraph('salary')">
+        <i class="fa fa-chart-line"></i> Show Graph
+      </button>
+    </div>
+    <div class="graph-panel" id="graph-salary">
+      <div class="graph-panel-label"><span>Salary vs Experience Curve</span><span>Generated by Matplotlib</span></div>
+      <img id="gimg-salary" src="" alt="Salary Graph"/>
+    </div>
+  </div>
+</div>
+
+<!-- ── CHURN ── -->
+<div class="modal-overlay" id="modal-churn">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('churn')"><i class="fa fa-times"></i></button>
+    <span class="modal-tag">Classification · Random Forest</span>
+    <h2>📉 Customer Churn</h2>
+    <div class="form-grid">
+      <div class="field"><label>Gender</label>
+        <select id="ch-gender"><option value="0">Female</option><option value="1">Male</option></select>
+      </div>
+      <div class="field"><label>Senior Citizen</label>
+        <select id="ch-senior"><option value="0">No</option><option value="1">Yes</option></select>
+      </div>
+      <div class="field"><label>Partner</label>
+        <select id="ch-partner"><option value="0">No</option><option value="1">Yes</option></select>
+      </div>
+      <div class="field"><label>Dependents</label>
+        <select id="ch-deps"><option value="0">No</option><option value="1">Yes</option></select>
+      </div>
+      <div class="field"><label>Tenure (months)</label><input type="number" id="ch-tenure" placeholder="e.g. 24" min="1" max="72"></div>
+      <div class="field"><label>Monthly Charges</label><input type="number" id="ch-monthly" placeholder="e.g. 65.50" step="0.01"></div>
+      <div class="field"><label>Total Charges</label><input type="number" id="ch-total" placeholder="e.g. 1572"></div>
+           <div class="field"><label>Internet Service</label>
+        <select id="ch-contract">
+          <option value="0">DSL</option>
+          <option value="1">Fiber optic</option>
+        </select>
+      </div>
+      <div class="field"><label>Contract</label>
+        <select id="ch-contract">
+          <option value="0">Month-to-month</option>
+          <option value="1">One year</option>
+          <option value="2">Two year</option>
+        </select>
+      </div>
+      <div class="field"><label>Payment Method</label>
+        <select id="ch-payment">
+          <option value="0">Bank Transfer</option>
+          <option value="1">Credit Card</option>
+          <option value="2">Electronic</option>
+          <option value="3">Mailed</option>
+        </select>
+      </div>
+    </div>
+    <button class="submit-btn" onclick="runPredict('churn')">Predict Churn →</button>
+    <div class="spinner" id="spin-churn"></div>
+    <div class="error-box" id="err-churn"></div>
+    <div class="result-box" id="res-churn">
+      <div class="result-label">Prediction</div>
+      <div class="result-value" id="resval-churn"></div>
+      <div class="result-note">Based on billing pattern, tenure &amp; contract type</div>
+      <button class="graph-btn" id="gbtn-churn" onclick="showGraph('churn')">
+        <i class="fa fa-chart-line"></i> Show Graph
+      </button>
+    </div>
+    <div class="graph-panel" id="graph-churn">
+      <div class="graph-panel-label"><span>Monthly Charges vs Churn Risk</span><span>Generated by Matplotlib</span></div>
+      <img id="gimg-churn" src="" alt="Churn Graph"/>
+    </div>
+  </div>
+</div>
+
+<!-- ── PROMOTION ── -->
+<div class="modal-overlay" id="modal-promotion">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('promotion')"><i class="fa fa-times"></i></button>
+    <span class="modal-tag">Classification · Random Forest</span>
+    <h2>🏆 Promotion Prediction</h2>
+    <div class="form-grid">
+      <div class="field"><label>Department</label>
+        <select id="pr-dept">
+          <option value="0">Finance</option>
+          <option value="1">HR</option>
+          <option value="2">IT</option>
+          <option value="3">Sales</option>
+        </select>
+      </div>
+      <div class="field"><label>Education</label>
+        <select id="pr-edu">
+          <option value="0">Bachelor's</option>
+          <option value="1">Master's &amp; above</option>
+          <option value="2">Below Bachelor's</option>
+        </select>
+      </div>
+      <div class="field"><label>Gender</label>
+        <select id="pr-gender"><option value="0">Female</option><option value="1">Male</option></select>
+      </div>
+      <div class="field"><label>Age</label><input type="number" id="pr-age" placeholder="e.g. 33" min="20" max="60"></div>
+      <div class="field"><label>Experience (years)</label><input type="number" id="pr-exp" placeholder="e.g. 8" min="0" max="35"></div>
+      <div class="field"><label>KPI Score (0–100)</label><input type="number" id="pr-kpi" placeholder="e.g. 85" min="0" max="100"></div>
+      <div class="field"><label>Awards Won</label>
+        <select id="pr-awards"><option value="0">No</option><option value="1">Yes</option></select>
+      </div>
+      <div class="field"><label>Previous Rating (1–5)</label>
+<input type="number" id="pr-kpi" placeholder="e.g. 85" min="0" max="10">
+      </div>
+    </div>
+    <button class="submit-btn" onclick="runPredict('promotion')">Predict Promotion →</button>
+    <div class="spinner" id="spin-promotion"></div>
+    <div class="error-box" id="err-promotion"></div>
+    <div class="result-box" id="res-promotion">
+      <div class="result-label">Prediction</div>
+      <div class="result-value" id="resval-promotion"></div>
+      <div class="result-note">Based on KPI, experience, awards &amp; performance rating</div>
+      <button class="graph-btn" id="gbtn-promotion" onclick="showGraph('promotion')">
+        <i class="fa fa-chart-line"></i> Show Graph
+      </button>
+    </div>
+    <div class="graph-panel" id="graph-promotion">
+      <div class="graph-panel-label"><span>KPI Score vs Promotion Probability</span><span>Generated by Matplotlib</span></div>
+      <img id="gimg-promotion" src="" alt="Promotion Graph"/>
+    </div>
+  </div>
+</div>
+
+<!-- ── HOUSE ── -->
+<div class="modal-overlay" id="modal-house">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('house')"><i class="fa fa-times"></i></button>
+    <span class="modal-tag">Regression · Random Forest</span>
+    <h2>🏠 House Price Prediction</h2>
+    <div class="form-grid single">
+      <div class="field"><label>Area (sq ft)</label><input type="number" id="hp-area" placeholder="e.g. 1500" min="100"></div>
+      <div class="field"><label>Bedrooms</label><input type="number" id="hp-bed" placeholder="e.g. 3" min="1" max="10"></div>
+      <div class="field"><label>Property Age (years)</label><input type="number" id="hp-age" placeholder="e.g. 10" min="0" max="100"></div>
+    </div>
+    <button class="submit-btn" onclick="runPredict('house')">Predict Price →</button>
+    <div class="spinner" id="spin-house"></div>
+    <div class="error-box" id="err-house"></div>
+    <div class="result-box" id="res-house">
+      <div class="result-label">Estimated House Price</div>
+      <div class="result-value" id="resval-house"></div>
+      <div class="result-note">Based on area, bedrooms &amp; property age</div>
+      <button class="graph-btn" id="gbtn-house" onclick="showGraph('house')">
+        <i class="fa fa-chart-line"></i> Show Graph
+      </button>
+    </div>
+    <div class="graph-panel" id="graph-house">
+      <div class="graph-panel-label"><span>House Price vs Area Curve</span><span>Generated by Matplotlib</span></div>
+      <img id="gimg-house" src="" alt="House Graph"/>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════════════ -->
+<script>
+const API = "http://127.0.0.1:5000";   // Flask server URL
+
+
+// ── Navbar scroll ─────────────────────────────────────────────
+const nav = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+}, { passive: true });
+
+// ── Scroll reveal ─────────────────────────────────────────────
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// ── Neural canvas ─────────────────────────────────────────────
+(function() {
+  const canvas = document.getElementById('neuralCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, nodes = [], animId;
+  function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
+  function initNodes(n = 55) {
+    nodes = Array.from({ length: n }, () => ({
+      x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35,
+      r: Math.random() * 2 + 1.2
+    }));
+  }
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const isDark = html.dataset.theme !== 'light';
+    const nodeColor = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)';
+    const lineBase = isDark ? '255,255,255' : '0,0,0';
+    nodes.forEach(n => {
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > H) n.vy *= -1;
+      ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fillStyle = nodeColor; ctx.fill();
+    });
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 130) {
+          ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y); ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.strokeStyle = `rgba(${lineBase},${(1 - dist / 130) * .18})`; ctx.lineWidth = .8; ctx.stroke();
+        }
+      }
+    }
+    animId = requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize', () => { cancelAnimationFrame(animId); resize(); initNodes(); draw(); });
+  resize(); initNodes(); draw();
+})();
+
+// ── Modal helpers ─────────────────────────────────────────────
+function openModal(model) {
+  document.getElementById(`modal-${model}`).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(model) {
+  document.getElementById(`modal-${model}`).classList.remove('open');
+  document.body.style.overflow = '';
+}
+// Close on overlay click
+document.querySelectorAll('.modal-overlay').forEach(ov => {
+  ov.addEventListener('click', e => { if (e.target === ov) { ov.classList.remove('open'); document.body.style.overflow = ''; } });
+});
+// ESC key
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(ov => { ov.classList.remove('open'); document.body.style.overflow = ''; });
+  }
+});
+
+// ── Build input payload per model ────────────────────────────
+function buildPayload(model) {
+  const g = id => document.getElementById(id).value;
+  if (model === 'salary') return {
+    Age: +g('sal-age'), Experience: +g('sal-exp'),
+    Education: +g('sal-edu'), JobRole: +g('sal-job'), Location: +g('sal-loc')
+  };
+  if (model === 'churn') return {
+    Gender: +g('ch-gender'), SeniorCitizen: +g('ch-senior'),
+    Partner: +g('ch-partner'), Dependents: +g('ch-deps'),
+    Tenure: +g('ch-tenure'), MonthlyCharges: +g('ch-monthly'),
+    TotalCharges: +g('ch-total'), Contract: +g('ch-contract'),
+    PaymentMethod: +g('ch-payment')
+  };
+  if (model === 'promotion') return {
+    Department: +g('pr-dept'), Education: +g('pr-edu'), Gender: +g('pr-gender'),
+    Age: +g('pr-age'), Experience: +g('pr-exp'), KPI_Score: +g('pr-kpi'),
+    Awards: +g('pr-awards'), Previous_Rating: +g('pr-rating')
+  };
+  if (model === 'house') return {
+    Area: +g('hp-area'), Bedrooms: +g('hp-bed'), Age: +g('hp-age')
+  };
+}
+
+// ── Validate (simple: check no NaN) ──────────────────────────
+function validate(payload) {
+  return !Object.values(payload).some(v => isNaN(v) || v === '' || v === null);
+}
+
+// ── Run prediction ────────────────────────────────────────────
+async function runPredict(model) {
+  const payload = buildPayload(model);
+
+  // UI elements
+  const spinner  = document.getElementById(`spin-${model}`);
+  const errBox   = document.getElementById(`err-${model}`);
+  const resBox   = document.getElementById(`res-${model}`);
+  const resVal   = document.getElementById(`resval-${model}`);
+  const graphBtn = document.getElementById(`gbtn-${model}`);
+  const graphPanel = document.getElementById(`graph-${model}`);
+
+  // Reset state
+  errBox.classList.remove('show'); errBox.textContent = '';
+  resBox.classList.remove('show');
+  graphBtn.classList.remove('show');
+  graphPanel.classList.remove('show');
+
+  if (!validate(payload)) {
+    errBox.textContent = '⚠ Please fill in all fields with valid numbers.';
+    errBox.classList.add('show');
+    return;
+  }
+
+  // Show spinner
+  spinner.classList.add('show');
+
+  try {
+    const resp = await fetch(`${API}/predict/${model}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await resp.json();
+    spinner.classList.remove('show');
+
+    if (!resp.ok || data.error) {
+      errBox.textContent = `❌ ${data.error || 'Prediction failed.'}`;
+      errBox.classList.add('show');
+      return;
+    }
+
+    // Show result
+    resVal.textContent = data.prediction;
+    resBox.classList.add('show');
+
+    // Show "Show Graph" button if graph is available
+    if (data.show_graph_option) {
+      graphBtn.classList.add('show');
+    }
+
+  } catch (err) {
+    spinner.classList.remove('show');
+    errBox.textContent = `❌ Cannot reach Flask server. Is it running at ${API}?`;
+    errBox.classList.add('show');
+  }
+}
+
+// ── Fetch and display graph ───────────────────────────────────
+async function showGraph(model) {
+  const graphPanel = document.getElementById(`graph-${model}`);
+  const graphImg   = document.getElementById(`gimg-${model}`);
+  const graphBtn   = document.getElementById(`gbtn-${model}`);
+
+  if (graphPanel.classList.contains('show')) {
+    // Toggle off
+    graphPanel.classList.remove('show');
+    graphBtn.innerHTML = '<i class="fa fa-chart-line"></i> Show Graph';
+    return;
+  }
+
+  graphBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Loading...';
+
+  try {
+    // Add cache-busting timestamp so browser doesn't show old graph
+    const ts = Date.now();
+    graphImg.src = `${API}/graph/${model}?t=${ts}`;
+    graphImg.onload  = () => { graphPanel.classList.add('show'); graphBtn.innerHTML = '<i class="fa fa-times"></i> Hide Graph'; };
+    graphImg.onerror = () => { graphBtn.innerHTML = '<i class="fa fa-chart-line"></i> Show Graph'; };
+  } catch (e) {
+    graphBtn.innerHTML = '<i class="fa fa-chart-line"></i> Show Graph';
+  }
+}
+</script>
+</body>
+</html>
