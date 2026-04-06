@@ -1,4 +1,6 @@
-flask==3.0.3
-flask-cors==4.0.1
-matplotlib==3.9.0
+flask
+flask-cors
+numpy==1.26.4
+scikit-learn==1.4.2
+matplotlib
 gunicorn
